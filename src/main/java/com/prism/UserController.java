@@ -5,20 +5,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/user")
+@RestController()
 public class UserController {
 
     @Autowired
     private UserEntityRepository repository;
 
-    @GetMapping("/{name}")
-    public String getUser(@PathVariable("names") String name) {
+    @GetMapping("/{test}")
+    public String getUser(@PathVariable("test") String name) {
         System.out.println(name);
         UserEntity user = new UserEntity();
         user.setUsername(name);
         user.setPassword("100102hp");
         UserEntity response = repository.save(user);
-        return "hello world";
-//        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return "hello " + name;
     }
 }
