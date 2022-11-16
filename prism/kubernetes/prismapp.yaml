@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prismapp
+  labels:
+    app: prismapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prismapp
+  template:
+    metadata:
+      labels:
+        app: prismapp
+    spec:
+      containers:
+        - name: prismapp
+          image: vanhieuit10/prism:1.0
+          ports:
+            - containerPort: 8080
+              name: prismapp-port
+      initContainers:
+        - name: init-mydb
+          image: busybox
+          command: ['sh', '-c', 'until nslookup vprodb; do echo waiting for mydb; sleep 2; done;']

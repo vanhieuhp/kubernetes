@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prismdb
+  labels:
+    app: prismdb
+spec:
+  selector:
+    matchLabels:
+      app: prismdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prismdb
+    spec:
+      containers:
+        - name: prismdb
+          image: vanhieuit10/prismdb:1.0
+          args:
+            - "--ignore-db-dir=lost+found"
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: prism-db-data
+          ports:
+            - containerPort: 3306
+              name: prismdb-port
+              # env:
+              #- name: MYSQL_ROOT_PASSWORD
+              #valueFrom:
+              #  secretKeyRef:
+              #    key: db-pass
+              #    name: app-secret
+      volumes:
+        - name: prism-db-data
+          emptyDir:
+            sizeLimit: 500Mi
